@@ -52,11 +52,11 @@ function checkAdd(addOption) {
 function checkView(viewOption) {
     switch(viewOption) {
         case 'Employee':
-            createEmployee();
+            viewEmployee();
         case 'Role':
-            createRole();
+            viewRole();
         case 'Department':
-            createDepartment();
+            viewDepartment();
         case 'Go Back':
             showOptions();
     }
@@ -65,11 +65,11 @@ function checkView(viewOption) {
 function checkUpdate(updateOption) {
     switch(updateOption) {
         case 'Employee':
-            createEmployee();
+            updateEmployee();
         case 'Role':
-            createRole();
+            updateRole();
         case 'Department':
-            createDepartment();
+            updateDepartment();
         case 'Go Back':
             showOptions();
     }
