@@ -19,7 +19,7 @@ VALUES
     ('Galileo','Galilei', 4, NULL);
 
 
-INSERT INTO department
+INSERT INTO department (name)
 VALUES 
     ('Information Technology'),
     ('Human Resource'),
