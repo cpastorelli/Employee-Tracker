@@ -1,13 +1,13 @@
-const { init } = require('express/lib/application');
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
-const database = require('./db');
+const connection = require('./db/connection');
+// const database = require('./db');
 
 
-init();
+startProgram();
 
-function init() {
-    console.log(`Program has started`);
+function startProgram() {
+    // console.log(`Program has started`);
     showOptions();
 }
 
@@ -18,62 +18,15 @@ function showOptions() {
         .prompt([
             {
                 type: "list",
-                name: "choice",
+                name: "firstchoice",
                 message: "Would you like to: ",
-                choices: ["View", "Add", "Update"]
+                choices: ["View All Employees", "View All departments", "View All roles",
+                 "Add a New Employee", "Add a New Department", "Add a New Role", "Update an Employee"]
             }
         ])
-        .then((response1) => {
-            console.log(response1);
-            checkOption(response1);
-        })
-}
-
-function viewOptions() {
-    inquirer
-        .prompt([
-            {
-                type:"list",
-                name: "viewchoice",
-                message: "What would you like to view?",
-                choices: ["Employee", "Role", "Department", "Go Back"]
-            }
-        ])
-        .then((response2) => {
-            console.log(response2);
-            checkView(response2);
-        })
-}
-
-function addOptions(){
-    inquirer
-        .prompt([
-            {
-                type:"list",
-                name: "addchoice",
-                message: "What would you like to add?",
-                choices: ["Employee", "Role", "Department", "Go Back"]
-            }
-        ])
-        .then((response3) => {
-            console.log(response3);
-            checkAdd(response3);
-        })
-}
-
-function updateOptions(){
-    inquirer
-        .prompt([
-            {
-                type:"list",
-                name: "updatechoice",
-                message: "What would you like to update?",
-                choices: ["Employee", "Role", "Department", "Go Back"]
-            }
-        ])
-        .then((response4) => {
-            console.log(response4);
-            checkUpdate(response4);
+        .then((response) => {
+            // const choice = response.firstchoice.replace(/\r?\n|\r/g, " ");
+            checkOption(response.firstchoice);
         })
 }
 
@@ -81,52 +34,38 @@ function updateOptions(){
 
 
 function checkOption(initialOption) {
+    console.log(`in check option function`);
+    console.log(initialOption);
+    // viewEmployee();
+    
     switch(initialOption) {
-        case 'View':
-            viewOptions();
-        case 'Add':
-            addOptions();
-        case 'Update':
-            updateOptions();
-    }
-}
-
-function checkView(viewOption) {
-    switch(viewOption) {
-        case 'Employee':
+        case 'View All Employees':
             viewEmployee();
-        case 'Role':
-            viewRole();
-        case 'Department':
+            break;
+        case 'View All departments':
             viewDepartment();
-        case 'Go Back':
-            showOptions();
-    }
-}
-
-function checkAdd(addOption) {
-    switch(addOption) {
-        case 'Employee':
-            createEmployee();
-        case 'Role':
-            createRole();
-        case 'Department':
-            createDepartment();
-        case 'Go Back':
-            showOptions();
-    }
-}
-
-function checkUpdate(updateOption) {
-    switch(updateOption) {
-        case 'Employee':
-            updateEmployee();
-        case 'Role':
-            updateRole();
-        case 'Department':
-            updateDepartment();
-        case 'Go Back':
-            showOptions();
+            break;
+        case 'View All roles':
+            viewRole();
+            break;
+        // case 'Add a New Employee':
+        //     addEmployee();
+        //     break;
+        case 'Add a New Department':
+            addDepartment();
+            break;
+        case 'Add a New Role':
+            addRole();
+            break;
+        // case 'View All Employees':
+        //     viewOptions();
+        //     break;
+        // case 'Update an Employee':
+        //     updateEmployee();
+        //     break;
+        // case 'Update':
+        //     updateOptions();
+        //     break;
     }
 }
 
@@ -134,35 +73,40 @@ function checkUpdate(updateOption) {
 
 const viewEmployee = () => {
     console.log(`ViewAllEmployees-------------------------------`);
+    
     const sqlQuery = `SELECT * FROM employee`;
     
-    connection.promise().query(sqlQuery, (err, results) => {
-        if (err) throw err;
-        console.log(results);
-        viewOptions();
+    connection.query(sqlQuery, (err, response) => {
+        if (err) {
+            throw err};
+   
+        console.log(response);    
     })
-}
+    setTimeout(() => {showOptions();}, 500);
+};
 
 const viewDepartment = () => {
     console.log(`ViewAllDepartments-----------------------------`);
     const sqlQuery = `SELECT * FROM department`;
     
-    connection.promise().query(sqlQuery, (err, results) => {
+    connection.query(sqlQuery, (err, reponse) => {
         if (err) throw err;
-        console.log(results);
-        viewOptions();
+        console.log(reponse);
+        
     })
+    setTimeout(() => {showOptions();}, 500);
 }
 
 const viewRole = () => {
     console.log(`ViewAllRoles-----------------------------`);
     const sqlQuery = `SELECT * FROM role`;
     
-    connection.promise().query(sqlQuery, (err, results) => {
+    connection.query(sqlQuery, (err, results) => {
         if (err) throw err;
         console.log(results);
-        viewOptions() 
+      
     })
+    setTimeout(() => {showOptions();}, 500);
 }
 
 // ---------------------------- ADDS --------------------------------
@@ -171,48 +115,154 @@ const viewRole = () => {
 // const addEmployee = () => {
 //     console.log(`addEmployee----------------------------`);
 //     inquirer
-//     prompt([
+//     .prompt([
 //         {
 //             type: "input",
 //             name: "first_name",
-//             message: "What is the employees first name?"
+//             message: "What is the employees first name?",
+//             validate:(answer) => {
+//                 if (!answer) {
+//                     console.log(`Must enter a first name!`);
+//                     return false;
+//                 };
+//                 return true;
+//             }
 //         },
 //         {
 //             type: "input",
 //             name: "last_name",
-//             message: "What is the employees last name?"
-//         }
+//             message: "What is the employees last name?",
+//             valididate:(answer) => {
+//                 if (!answer) {
+//                     console.log(`Must enter a last name!`);
+//                     return false;
+//                 };
+//                 return true;
+//             }
+//         },
+//         {
+//             type: "input",
+//             name: "role_id",
+//             message: "What is their role?",
+//             valididate:(answer) => {
+//                 // must check if there is something in the role, must also check if the role is valid
+
+//                 if (!answer || answer === '') {
+//                     console.log(`Must enter a role!`);
+//                     return false;
+//                 };
+//                 if (answer && answer !== '') {
+//                     // check if role is valid. 
+//                 }
+//                 return true;
+//             }
+//         },
+
 //     ])
 //     .then(response => {
-//         let firstName = response.first_name;
-//         let lastName = response.last_name;
+//         console.log(response);
+//         // make if statement here to check if there is a manager id 
 
-//         database.showAllRoles()
-//         .then(([roles]) => {
-//             const roleOptions = roles.map(({id, title}) => ({
-//                 name: title;
-//                 value:id
-//             }))
-//         })
+//         const sqlQuery = `INSERT INTO employee `
+
 //     })
 // }
 
-// const addDepartment = () => {
-//     console.log(`addDepartment----------------------------`);
-//     inquirer
-//     prompt([
-//         {
-            
-//         }
-//     ])
-// }
+const addDepartment = () => {
+    console.log(`addDepartment----------------------------`);
+    inquirer
+    .prompt([
+        {
+            type: "input",
+            name: "dept_name",
+            message: "What is the name of the new Department? ",
+            validate:(answer) => {
+                if (!answer || answer === '') {
+                    console.log(`Please enter a Department name!`);
+                    return false;
+                };
+                return true;
+            }
+        }
+    ])
+    .then((response) => {
+        console.log(response.dept_name);
+        const sqlQuery = `INSERT INTO department (name) VALUES ('${response.dept_name}')`;
+        console.log(sqlQuery);
 
-// const addRole = () => {
-//     console.log(`addRole----------------------------`);
-//     inquirer
-//     prompt([
-//         {
-            
-//         }
-//     ])
-// }
+        connection.query(sqlQuery, (err, results) => {
+            if (err) throw err;
+            console.log(results);
+        })
+
+        setTimeout(() => {showOptions();}, 500);
+
+    })  
+}
+
+const addRole = () => {
+    console.log(`addRole----------------------------`);
+    inquirer
+    .prompt([
+        {
+            type: "input",
+            name: "dept_name",
+            message: "What is the name of the new Role? ",
+            validate:(answer) => {
+                if (!answer || answer === '') {
+                    console.log(`Please enter a Role name!`);
+                    return false;
+                };
+                return true;
+            }
+        },
+        {
+            type: "number",
+            name: "salary",
+            message: "How much will this role be making per year? ",
+            validate:(answer) => {
+                if (!answer || answer === '') {
+                    console.log(`Please enter a salary for this role!`);
+                    return false;
+                };
+                if(answer <= 0) {
+                    console.log(`Salary must be greater than 0`);
+                    return false;
+                };
+                return true;
+            }
+        },
+        {
+            type: "number",
+            name: "dept_id",
+            message: "What department is this role in? ",
+            validate:(answer) => {
+                if (!answer || answer === '') {
+                    console.log(`Please enter a department number!`);
+                    return false;
+                };
+                if (answer <= 0){
+                    console.log(`Department number must be greater than 0!`);
+                    return false;
+                }
+                // if (answer > 0) {
+                //     // must validate that this number is correct/ it exists
+                // }
+                return true;
+            }
+        }
+    ])
+    .then((response) => {
+        console.log(response.dept_name);
+        const sqlQuery = `INSERT INTO role (title, salary, dept_id) VALUES ('${response.dept_name}', ${response.salary}, ${response.dept_id})`;
+        console.log(sqlQuery);
+
+        connection.query(sqlQuery, (err, results) => {
+            if (err) throw err;
+            console.log(results);
+        })
+
+        setTimeout(() => {showOptions();}, 500);
+
+    }) 
+}
