@@ -1,5 +1,6 @@
 const { init } = require('express/lib/application');
 const inquirer = require('inquirer');
+const mysql = require('mysql2');
 const database = require('./db');
 
 
@@ -79,7 +80,6 @@ function updateOptions(){
 // --------------------------  Switches  ---------------------------------
 
 
-
 function checkOption(initialOption) {
     switch(initialOption) {
         case 'View':
@@ -91,19 +91,6 @@ function checkOption(initialOption) {
     }
 }
 
-function checkAdd(addOption) {
-    switch(addOption) {
-        case 'Employee':
-            createEmployee();
-        case 'Role':
-            createRole();
-        case 'Department':
-            createDepartment();
-        case 'Go Back':
-            showOptions();
-    }
-}
-
 function checkView(viewOption) {
     switch(viewOption) {
         case 'Employee':
@@ -112,6 +99,19 @@ function checkView(viewOption) {
             viewRole();
         case 'Department':
             viewDepartment();
+        case 'Go Back':
+            showOptions();
+    }
+}
+
+function checkAdd(addOption) {
+    switch(addOption) {
+        case 'Employee':
+            createEmployee();
+        case 'Role':
+            createRole();
+        case 'Department':
+            createDepartment();
         case 'Go Back':
             showOptions();
     }
@@ -132,69 +132,87 @@ function checkUpdate(updateOption) {
 
 // -----------------------  VIEWS  ---------------------------------------
 
-const viewAllEmployees = () => {
+const viewEmployee = () => {
     console.log(`ViewAllEmployees-------------------------------`);
-    database.showAllEmployees()
-    .then(([employee]) => {   
-        console.log(employee);
+    const sqlQuery = `SELECT * FROM employee`;
+    
+    connection.promise().query(sqlQuery, (err, results) => {
+        if (err) throw err;
+        console.log(results);
+        viewOptions();
     })
-    .then(() => viewOptions());
 }
 
-const viewAllDepartments = () => {
+const viewDepartment = () => {
     console.log(`ViewAllDepartments-----------------------------`);
-    database.showAllDepartments()
-    .then(([department]) => {
-        console.log(department);
+    const sqlQuery = `SELECT * FROM department`;
+    
+    connection.promise().query(sqlQuery, (err, results) => {
+        if (err) throw err;
+        console.log(results);
+        viewOptions();
     })
-    .then(() => viewOptions());
 }
 
-const viewAllRoles = () => {
+const viewRole = () => {
     console.log(`ViewAllRoles-----------------------------`);
-    database.showAllRoles()
-    .then(([role]) => {
-        console.log(role);
+    const sqlQuery = `SELECT * FROM role`;
+    
+    connection.promise().query(sqlQuery, (err, results) => {
+        if (err) throw err;
+        console.log(results);
+        viewOptions() 
     })
-    .then(() => viewOptions());
 }
 
 // ---------------------------- ADDS --------------------------------
 
 
-const addEmployee = () => {
-    console.log(`addEmployee----------------------------`);
-    inquirer
-    prompt([
-        {
-            type: "input",
-            name: "first_name",
-            message: "What is the employees first name?"
-        },
-        {
-            type: "input",
-            name: "last_name",
-            message: "What is the employees last name?"
-        }
-    ])
-}
+// const addEmployee = () => {
+//     console.log(`addEmployee----------------------------`);
+//     inquirer
+//     prompt([
+//         {
+//             type: "input",
+//             name: "first_name",
+//             message: "What is the employees first name?"
+//         },
+//         {
+//             type: "input",
+//             name: "last_name",
+//             message: "What is the employees last name?"
+//         }
+//     ])
+//     .then(response => {
+//         let firstName = response.first_name;
+//         let lastName = response.last_name;
 
-const addDepartment = () => {
-    console.log(`addDepartment----------------------------`);
-    inquirer
-    prompt([
-        {
-            
-        }
-    ])
-}
+//         database.showAllRoles()
+//         .then(([roles]) => {
+//             const roleOptions = roles.map(({id, title}) => ({
+//                 name: title;
+//                 value:id
+//             }))
+//         })
+//     })
+// }
 
-const addRole = () => {
-    console.log(`addRole----------------------------`);
-    inquirer
-    prompt([
-        {
+// const addDepartment = () => {
+//     console.log(`addDepartment----------------------------`);
+//     inquirer
+//     prompt([
+//         {
             
-        }
-    ])
-}
+//         }
+//     ])
+// }
+
+// const addRole = () => {
+//     console.log(`addRole----------------------------`);
+//     inquirer
+//     prompt([
+//         {
+            
+//         }
+//     ])
+// }
