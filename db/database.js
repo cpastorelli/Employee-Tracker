@@ -1,6 +1,32 @@
 class Database {
-    constructor(){}
+    constructor() {}
 
-    viewEmployee(){}
+    viewEmployee() {
+        return 
+    }
+
+    viewRoles() {
+
+    }
+
+    viewDepartments() {
+
+    }
+
+    addEmployee() {
+
+    }
+
+    addRole() {
+
+    }
+
+    addDepartment() {
+
+    }
+
+    updateEmployee() {
+
+    }
 
 }

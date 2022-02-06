@@ -2,14 +2,14 @@ USE employee_db;
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES
-    ('Johannes', 'Gutenberg', 5, NULL),
+    ('Johannes','Gutenberg', 5, NULL),
     ('Napoleon','Bonaparte', 4, NULL),
     ('Martin','Luther', 3, NULL),
     ('Karl','Marx', 3, NULL),
     ('Julius','Caesar', 3, NULL),
     ('Gautama','Buddha', 2, NULL),
     ('Nikola','Tesla', 1, 1),
-    ('George','Washington', 2, 2,
+    ('George','Washington', 2, 2),
     ('Abraham','Lincoln', 5, 3),
     ('Mahatma','Gandhi', 2, NULL),
     ('Martin','King', 2, 3),

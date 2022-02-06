@@ -14,6 +14,12 @@ CREATE TABLE employee (
     ON DELETE SET NULL
 );
 
+CREATE TABLE department (
+    id INT AUTO_INCREMENT,
+    name VARCHAR(30) NOT NULL,
+    PRIMARY KEY (id)
+);
+
 CREATE TABLE role (
     id INT AUTO_INCREMENT,
     title VARCHAR(30) NOT NULL,
@@ -21,10 +27,4 @@ CREATE TABLE role (
     dept_id INT NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (dept_id) REFERENCES department(id)
-);
-
-CREATE TABLE department (
-    id INT AUTO_INCREMENT,
-    name VARCHAR(30) NOT NULL,
-    PRIMARY KEY (id)
 );
