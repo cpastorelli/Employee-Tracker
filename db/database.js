@@ -1,0 +1,6 @@
+class Database {
+    constructor(){}
+
+    viewEmployee(){}
+
+}

@@ -1,4 +1,4 @@
-USE employee;
+USE employee_db;
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES
@@ -8,15 +8,15 @@ VALUES
     ('Karl','Marx', 3, NULL),
     ('Julius','Caesar', 3, NULL),
     ('Gautama','Buddha', 2, NULL),
-    ('Nikola','Tesla', 1, NULL),
-    ('George','Washington', 2, NULL),
-    ('Abraham','Lincoln', 5, NULL),
+    ('Nikola','Tesla', 1, 1),
+    ('George','Washington', 2, 2,
+    ('Abraham','Lincoln', 5, 3),
     ('Mahatma','Gandhi', 2, NULL),
-    ('Martin','King', 2, NULL),
+    ('Martin','King', 2, 3),
     ('William','Shakespeare', 5, NULL),
     ('Charles','Darwin', 1, NULL),
-    ('Alexander','Great', 5, NULL),
-    ('Galileo','Galilei', 4, NULL);
+    ('Alexander','Great', 5, 2),
+    ('Galileo','Galilei', 4, 1);
 
 
 INSERT INTO department (name)
