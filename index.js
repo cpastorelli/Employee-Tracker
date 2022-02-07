@@ -7,7 +7,6 @@ const connection = require('./db/connection');
 startProgram();
 
 function startProgram() {
-    // console.log(`Program has started`);
     showOptions();
 }
 
@@ -34,9 +33,6 @@ function showOptions() {
 
 
 function checkOption(initialOption) {
-    console.log(`in check option function`);
-    console.log(initialOption);
-    // viewEmployee();
     
     switch(initialOption) {
         case 'View All Employees':
@@ -48,64 +44,59 @@ function checkOption(initialOption) {
         case 'View All roles':
             viewRole();
             break;
-        // case 'Add a New Employee':
-        //     addEmployee();
-        //     break;
+        case 'Add a New Employee':
+            addEmployee();
+            break;
         case 'Add a New Department':
             addDepartment();
             break;
         case 'Add a New Role':
             addRole();
             break;
-        // case 'View All Employees':
-        //     viewOptions();
-        //     break;
         // case 'Update an Employee':
         //     updateEmployee();
         //     break;
-        // case 'Update':
-        //     updateOptions();
-        //     break;
+
     }
 }
 
 // -----------------------  VIEWS  ---------------------------------------
 
 const viewEmployee = () => {
-    console.log(`ViewAllEmployees-------------------------------`);
+    console.log(`------- Viewing All Employees -------`);
     
     const sqlQuery = `SELECT * FROM employee`;
     
     connection.query(sqlQuery, (err, response) => {
-        if (err) {
-            throw err};
-   
-        console.log(response);    
+        if (err) throw err;
+        console.log(response); 
+           
     })
+
     setTimeout(() => {showOptions();}, 500);
 };
 
 const viewDepartment = () => {
-    console.log(`ViewAllDepartments-----------------------------`);
+    console.log(`------- Viewing All Departments -------`);
     const sqlQuery = `SELECT * FROM department`;
     
     connection.query(sqlQuery, (err, reponse) => {
         if (err) throw err;
         console.log(reponse);
-        
     })
+
     setTimeout(() => {showOptions();}, 500);
 }
 
 const viewRole = () => {
-    console.log(`ViewAllRoles-----------------------------`);
+    console.log(`------- Viewing All Roles -------`);
     const sqlQuery = `SELECT * FROM role`;
     
     connection.query(sqlQuery, (err, results) => {
         if (err) throw err;
         console.log(results);
-      
     })
+
     setTimeout(() => {showOptions();}, 500);
 }
 
@@ -169,7 +160,7 @@ const viewRole = () => {
 // }
 
 const addDepartment = () => {
-    console.log(`addDepartment----------------------------`);
+    console.log(`------- Creating A New Department -------`);
     inquirer
     .prompt([
         {
@@ -201,7 +192,8 @@ const addDepartment = () => {
 }
 
 const addRole = () => {
-    console.log(`addRole----------------------------`);
+    console.log(`------- Creating A New Role -------`);
+
     inquirer
     .prompt([
         {
@@ -217,7 +209,7 @@ const addRole = () => {
             }
         },
         {
-            type: "number",
+            type: "input",
             name: "salary",
             message: "How much will this role be making per year? ",
             validate:(answer) => {
@@ -225,6 +217,9 @@ const addRole = () => {
                     console.log(`Please enter a salary for this role!`);
                     return false;
                 };
+
+                answer = Number(answer);
+
                 if(answer <= 0) {
                     console.log(`Salary must be greater than 0`);
                     return false;
@@ -233,7 +228,7 @@ const addRole = () => {
             }
         },
         {
-            type: "number",
+            type: "input",
             name: "dept_id",
             message: "What department is this role in? ",
             validate:(answer) => {
@@ -241,13 +236,13 @@ const addRole = () => {
                     console.log(`Please enter a department number!`);
                     return false;
                 };
+
+                answer = Number(answer);
+
                 if (answer <= 0){
                     console.log(`Department number must be greater than 0!`);
                     return false;
-                }
-                // if (answer > 0) {
-                //     // must validate that this number is correct/ it exists
-                // }
+                };
                 return true;
             }
         }
@@ -258,7 +253,10 @@ const addRole = () => {
         console.log(sqlQuery);
 
         connection.query(sqlQuery, (err, results) => {
-            if (err) throw err;
+            if (err) {
+                console.log(`The department ID provided does not exist. Please try again.`);
+                return false;
+            }
             console.log(results);
         })
 
@@ -266,3 +264,4 @@ const addRole = () => {
 
     }) 
 }
+
